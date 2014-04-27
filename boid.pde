@@ -7,6 +7,8 @@ class Boid {
   Boolean jitterOn = true;
 
   float size = 100;
+  float minSize = 30;
+  float maxSize = 300;
 
   Boid(ArrayList<Vec3D> _vecs) {
     vecs = _vecs;
@@ -48,6 +50,7 @@ class Boid {
   void update() {
     if (jitterOn) {
       shapeJitter();
+      limitShape();
     }
     for(Face f: faces) {
       f.update();
@@ -94,6 +97,16 @@ class Boid {
     center.scaleSelf(1.0/vecs.size());
     for(Vec3D v : vecs) {
       v.addSelf(center.getInverted());
+    }
+  }
+
+  void limitShape() {
+    for(Vec3D v : vecs) {
+      if (v.magnitude() < minSize) {
+        v.normalizeTo(minSize);
+      } else {
+        v.limit(maxSize);
+      }
     }
   }
 }

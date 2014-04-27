@@ -22,6 +22,8 @@ void draw() {
       width/2.0, height/2.0, 0,
       0, 1, 0); 
 
+  directionalLight(126, 126, 126, 0, 0, -1);
+  ambientLight(102, 102, 102);
   stone.body.rotate3D(new Vec3D(radians(1), 0, 0));
   stone.run();
 }

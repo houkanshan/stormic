@@ -1,7 +1,13 @@
+
 class Face {
   Vec3D a;
   Vec3D b;
   Vec3D c;
+
+  PImage img = loadImage("paint_color_s.png");
+  Vec2D ta = new Vec2D(0, 0);
+  Vec2D tb = new Vec2D(0, 100);
+  Vec2D tc;
 
   Vec3D angle3D = new Vec3D();
 
@@ -12,6 +18,11 @@ class Face {
   }
 
   void update() {
+    Vec3D ab = b.sub(a);
+    Vec3D ac = c.sub(a);
+    float bac = ac.angleBetween(ab, true);
+    float _bc = ab.magnitude();
+    tc = new Vec2D(_bc * sin(bac), _bc * cos(bac));
   }
 
   void render() {
@@ -26,15 +37,17 @@ class Face {
 
   void renderShape() {
     beginShape();
-    shapeV(a);
-    shapeV(b);
-    shapeV(c);
+    tint(255, 0, 0);
+    texture(img);
+    shapeV(a, ta);
+    shapeV(b, tb);
+    shapeV(c, tc);
     endShape(CLOSE);
   }
 
   // util
-  void shapeV(Vec3D v) {
-    vertex(v.x, v.y, v.z);
+  void shapeV(Vec3D v, Vec2D tv) {
+    vertex(v.x, v.y, v.z, tv.x, tv.y);
   }
 
   void lineV(Vec3D v) {
