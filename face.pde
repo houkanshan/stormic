@@ -3,6 +3,7 @@ class Face {
   Vec3D a;
   Vec3D b;
   Vec3D c;
+  color ccolor = color(254, 254, 254);
 
   PImage img = loadImage("paint_color_s.png");
   Vec2D ta = new Vec2D(0, 0);
@@ -37,13 +38,18 @@ class Face {
 
   void renderShape() {
     beginShape();
-    tint(255, 0, 0);
+    tint(ccolor);
     texture(img);
     shapeV(a, ta);
     shapeV(b, tb);
     shapeV(c, tc);
     endShape(CLOSE);
   }
+
+  void setColor(color _color) {
+    ccolor = _color;
+  }
+
 
   // util
   void shapeV(Vec3D v, Vec2D tv) {

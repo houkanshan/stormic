@@ -10,6 +10,8 @@ class Boid {
   float minSize = 30;
   float maxSize = 300;
 
+  color ccolor = color(254, 254, 254);
+
   Boid(ArrayList<Vec3D> _vecs) {
     vecs = _vecs;
     initialize();
@@ -53,6 +55,7 @@ class Boid {
       limitShape();
     }
     for(Face f: faces) {
+      f.setColor(ccolor);
       f.update();
     }
   }
