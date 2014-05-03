@@ -6,11 +6,12 @@
 float swt = 25.0;     //sep.mult(25.0f);
 float awt = 4.0;      //ali.mult(4.0f);
 float cwt = 5.0;      //coh.mult(5.0f);
-float maxspeed = 1;
+float maxspeed = 2;
 float maxforce = 0.025;
+float zR = 10;
+float collisionWeaken = 0.8;
 
 class Boid {
-
   Stone body;
 
   float r = 20;
@@ -23,7 +24,7 @@ class Boid {
     body = new Stone();
 
     acc = new Vec3D(0, 0, 0);
-    vel = new Vec3D(random(-1,1),random(-1,1), 0);
+    vel = new Vec3D(random(0,1), random(-1,1), random(-1,1));
     loc = new Vec3D(x, y, z);
   }
 
@@ -67,6 +68,14 @@ class Boid {
     if (loc.y < -r) loc.y = height+r;
     if (loc.x > width+r) loc.x = -r;
     if (loc.y > height+r) loc.y = -r;
+
+    if (loc.z > zR) {
+      vel.z = -abs(vel.z) * collisionWeaken;
+    }
+
+    if (loc.z < -zR) {
+      vel.z = abs(vel.z) * collisionWeaken;
+    }
   }
 
   void render() {

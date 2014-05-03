@@ -37,6 +37,8 @@ class Face {
 
 
   void renderShape() {
+    stroke(0);
+
     beginShape();
     tint(ccolor);
     texture(img);

@@ -1,0 +1,54 @@
+class Wave {
+  float amp = 50;
+  int[] lines;
+  int linesCount = 4;
+
+  AudioPlayer song;
+
+  Wave(AudioPlayer _song) {
+    song = _song;
+    initLines();
+  }
+
+  void run() {
+    update();
+    render();
+  }
+
+  void update() {
+  }
+
+  void render() {
+    stroke(0);
+    // we draw the waveform by connecting neighbor values with a line
+    // we multiply each of the values by 50 
+    // because the values in the buffers are normalized
+    // this means that they have values between -1 and 1. 
+    // If we don't scale them up our waveform 
+    // will look more or less like a straight line.
+    Boolean nowLeft;
+    AudioBuffer wave;
+    for(int i = 0; i < song.bufferSize() - 1; i++) {
+      nowLeft = true;
+      for (int line : lines) {
+        if (nowLeft) {
+          wave = song.left;
+        } else {
+          wave = song.right;
+        }
+        nowLeft = !nowLeft;
+
+        line(i, line + wave.get(i)*amp,
+            i+1, line + wave.get(i+1)*amp);
+      }
+    }
+  }
+
+  void initLines() {
+    lines = new int[linesCount];
+
+    for (int i = 0; i < linesCount; ++i) {
+      lines[i] = height * (i + 1) / (linesCount + 1);
+    }
+  }
+}
