@@ -3,14 +3,18 @@ import toxi.geom.*;
 
 Boolean debug = true;
 
-Stone stone; // tmp one
+Flock flock;
 
 void setup() {
   //size(1024, 640, "processing.core.PGraphicsRetina2D");
   size(1024, 640, OPENGL);
-  hint(ENABLE_RETINA_PIXELS);
+  hint(ENABLE_RETINA_PIXELS); // useless..
 
-  stone = new Stone(512, 320, 0);
+  flock = new Flock();
+  for (int i = 0; i < 120; i++) {
+    flock.addBoid(new Boid(10, random(10, height - 10), 0));
+  }
+
   smooth();
 }
 
@@ -22,12 +26,9 @@ void draw() {
       width/2.0, height/2.0, 0,
       0, 1, 0); 
 
+  // TODO
   directionalLight(126, 126, 126, 0, 0, -1);
   ambientLight(102, 102, 102);
-  stone.body.rotate3D(new Vec3D(radians(1), 0, 0));
-  stone.run();
-}
 
-void mousePressed() {
-  stone.body.scale(2);
+  flock.run();
 }
