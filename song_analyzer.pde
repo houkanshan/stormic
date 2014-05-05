@@ -1,13 +1,13 @@
 import ddf.minim.*;
- 
-Minim minim;
-AudioPlayer song;
-AudioInput input;
-Wave wave;
-FFTWave fftWave;
-Beat beat;
 
 class SongAnalyzer {
+  Minim minim;
+  AudioPlayer song;
+  AudioInput input;
+  Wave wave;
+  FFTWave fft;
+  Beat beat;
+
   SongAnalyzer(Object processing, String fileName) {
     initialize(processing, fileName);
   }
@@ -20,7 +20,7 @@ class SongAnalyzer {
     initPlayer(song);
 
     wave = new Wave(song);
-    fftWave = new FFTWave(song);
+    fft = new FFTWave(song);
     beat = new Beat(song);
   }
 
@@ -29,16 +29,18 @@ class SongAnalyzer {
     render();
   }
 
-  void update() {}
+  void update() {
+  }
 
   void render() {
     wave.run();
-    fftWave.run();
+    fft.run();
     beat.run();
   }
 
   void initPlayer(AudioPlayer song) {
     song.loop();
+    pause();
   }
 
   // Player Control

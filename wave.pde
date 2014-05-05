@@ -1,7 +1,9 @@
 class Wave {
+  float maxLoudLess = 700;
   float amp = 50;
   int[] lines;
   int linesCount = 4;
+  float loudLess;
 
   AudioPlayer song;
 
@@ -16,6 +18,7 @@ class Wave {
   }
 
   void update() {
+    loudLess = min(getLoudLess(), maxLoudLess);
   }
 
   void render() {
@@ -50,5 +53,15 @@ class Wave {
     for (int i = 0; i < linesCount; ++i) {
       lines[i] = height * (i + 1) / (linesCount + 1);
     }
+  }
+
+  float getLoudLess() {
+    float loudLess = 0;
+    AudioBuffer wave = song.mix;
+    int ilen = song.bufferSize();
+    for(int i = 0; i < ilen; i++) {
+      loudLess += abs(wave.get(i));
+    }
+    return loudLess;
   }
 }

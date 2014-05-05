@@ -1,15 +1,24 @@
 import ddf.minim.analysis.*;
+
  
 class FFTWave {
 
+  float maxLoudLess = 3500;
   AudioPlayer song;
-  FFT fft;
+  FFT L;
+  FFT R;
+  FFT M;
   float amp = width/2;
+  float loudLess;
+  int averages = 60;
   
-
   FFTWave(AudioPlayer _song) {
     song = _song;
-    fft = new FFT(song.bufferSize(), song.sampleRate());
+    L = new FFT(song.bufferSize(), song.sampleRate());
+    L.linAverages(averages);
+    R = new FFT(song.bufferSize(), song.sampleRate());
+    M = new FFT(song.bufferSize(), song.sampleRate());
+    M.linAverages(averages); // maybe should not use.
   }
 
   void run() {
@@ -18,7 +27,11 @@ class FFTWave {
   }
 
   void update() {
-    fft.forward(song.mix);
+    L.forward(song.left);
+    R.forward(song.right);
+    M.forward(song.mix);
+
+    loudLess = min(getLoudLess(), maxLoudLess);
   }
 
   void render() {
@@ -29,11 +42,27 @@ class FFTWave {
     // draw the spectrum as a series of vertical lines
     // I multiple the value of getBand by 4 
     // so that we can see the lines better
-    for(int i = 0; i < fft.specSize(); i++)
-    {
-      //line(i, amp, i, amp - fft.getBand(i)*4);
-      line(0, i,
-          fft.getBand(i)*4, i);
+    int ilen;
+
+    ilen = L.avgSize();
+    for(int i = 0; i < ilen; i++) {
+      float y = height/2 - i;
+      line(0, y, L.getAvg(i) * 10, y);
     }
+
+    ilen = R.specSize();
+    for(int i = 0; i < ilen; i++) {
+      float y = height/2 + i;
+      line(0, y, R.getBand(i)*4, y);
+    }
+  }
+
+  float getLoudLess() {
+    float loudLess = 0;
+    int ilen = M.specSize();
+    for(int i = 0; i < ilen; i++) {
+      loudLess += M.getBand(i);
+    }
+    return loudLess;
   }
 }

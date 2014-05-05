@@ -6,7 +6,7 @@
 float swt = 25.0;     //sep.mult(25.0f);
 float awt = 4.0;      //ali.mult(4.0f);
 float cwt = 5.0;      //coh.mult(5.0f);
-float maxspeed = 2;
+float maxspeed = 3;
 float maxforce = 0.025;
 float zR = 10;
 float collisionWeaken = 0.8;
