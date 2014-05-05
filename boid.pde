@@ -19,12 +19,13 @@ class Boid {
   Vec3D loc = new Vec3D(0, 0, 0);
   Vec3D vel = new Vec3D(0, 0, 0);
   Vec3D acc = new Vec3D(0, 0, 0);
+  Boolean isAlive = true;
 
   Boid(float x, float y, float z) {
     body = new Stone();
 
     acc = new Vec3D(0, 0, 0);
-    vel = new Vec3D(random(0,1), random(-1,1), random(-1,1));
+    vel = new Vec3D(random(0.5,1), random(-1,1), random(-1,1));
     loc = new Vec3D(x, y, z);
   }
 
@@ -64,10 +65,10 @@ class Boid {
   }
 
   void borders() {
-    if (loc.x < -r) loc.x = width+r;
-    if (loc.y < -r) loc.y = height+r;
-    if (loc.x > width+r) loc.x = -r;
-    if (loc.y > height+r) loc.y = -r;
+    if (loc.x < -r || loc.x > width+r
+        || loc.y < -r || loc.y > height+r) {
+      isAlive = false;
+    }
 
     if (loc.z > zR) {
       vel.z = -abs(vel.z) * collisionWeaken;

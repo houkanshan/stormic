@@ -15,12 +15,16 @@ class Flock {
 
   void run() {
     for (Boid b : boids) {
-      b.run(boids);  // Passing the entire list of boids to each boid individually
+      b.run(boids);
+    }
+    for (Boid b : boids) {
+      if (!b.isAlive) {
+        boids.remove(b);
+      }
     }
   }
 
   void addBoid(Boid b) {
     boids.add(b);
   }
-
 }
