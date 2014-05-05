@@ -29,7 +29,7 @@ class Boid {
     loc = new Vec3D(x, y, z);
   }
 
-  void run(ArrayList<Boid> boids) {
+  void run(CopyOnWriteArrayList<Boid> boids) {
     flock(boids);
     update();
     borders();
@@ -37,7 +37,7 @@ class Boid {
   }
 
   // We accumulate a new acceleration each time based on three rules
-  void flock(ArrayList<Boid> boids) {
+  void flock(CopyOnWriteArrayList<Boid> boids) {
     Vec3D sep = separate(boids);   // Separation
     Vec3D ali = align(boids);      // Alignment
     Vec3D coh = cohesion(boids);   // Cohesion
@@ -109,7 +109,7 @@ class Boid {
 
   // Separation
   // Method checks for nearby boids and steers away
-  Vec3D separate (ArrayList<Boid> boids) {
+  Vec3D separate (CopyOnWriteArrayList<Boid> boids) {
     float desiredseparation = 25.0;
     Vec3D steer = new Vec3D(0, 0, 0);
     int count = 0;
@@ -139,7 +139,7 @@ class Boid {
 
   // Alignment
   // For every nearby boid in the system, calculate the average velocity
-  Vec3D align (ArrayList<Boid> boids) {
+  Vec3D align (CopyOnWriteArrayList<Boid> boids) {
     float neighbordist = 50.0;
     Vec3D steer = new Vec3D();
     int count = 0;
@@ -163,7 +163,7 @@ class Boid {
 
   // Cohesion
   // For the average location (i.e. center) of all nearby boids, calculate steering vector towards that location
-  Vec3D cohesion (ArrayList<Boid> boids) {
+  Vec3D cohesion (CopyOnWriteArrayList<Boid> boids) {
     float neighbordist = 50.0;
     Vec3D sum = new Vec3D(0, 0, 0);   // Start with empty vector to accumulate all locations
     int count = 0;

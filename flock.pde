@@ -5,12 +5,13 @@
 
 // Flock class
 // Does very little, simply manages the ArrayList of all the boids
+import java.util.concurrent.*;
 
 class Flock {
-  ArrayList<Boid> boids; // An ArrayList for all the boids
+  CopyOnWriteArrayList<Boid> boids; // An ArrayList for all the boids
 
   Flock() {
-    boids = new ArrayList<Boid>(); // Initialize the ArrayList
+    boids = new CopyOnWriteArrayList<Boid>(); // Initialize the ArrayList
   }
 
   void run() {
