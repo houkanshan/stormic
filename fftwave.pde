@@ -59,9 +59,9 @@ class FFTWave {
 
   float getLoudLess() {
     float loudLess = 0;
-    int ilen = M.specSize();
+    int ilen = M.avgSize();
     for(int i = 0; i < ilen; i++) {
-      loudLess += M.getBand(i);
+      loudLess += M.getAvg(i);
     }
     return loudLess;
   }

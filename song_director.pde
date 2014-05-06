@@ -1,16 +1,21 @@
 import java.util.Collections;
 
 int maxCount = 10;
+int countDownTime = 3;
 
 class SongDirector {
   Flock flock;
   SongAnalyzer songAnalyzer;
   ArrayList<Integer> randomIndexs;
+  ArrayList<Integer> countDowns;
+  int countDown;
 
   SongDirector(SongAnalyzer _songAnalyzer, Flock _flock) {
     flock = _flock;
     songAnalyzer = _songAnalyzer;
     randomIndexs = getRandomIndexs();
+    countDowns = new ArrayList<Integer>(Collections.nCopies(
+      songAnalyzer.fft.averages, 0));
   }
 
   void run() {
@@ -25,28 +30,37 @@ class SongDirector {
     createBoids();
   }
 
+  Boolean needWait() {
+    if (songAnalyzer.beat.beat.isKick()) { return false; }
+    if (songAnalyzer.fft.loudLess < 20) { return true; }
+    countDown -= 1;
+    if (countDown > 0) { return true; }
+    countDown = 15;
+    return false;
+  }
+
   void createBoids() {
+    if (needWait()) { return; }
+
     int i, ilen;
 
-    if (!songAnalyzer.beat.beat.isKick()) { return; }
-
     ilen = songAnalyzer.fft.M.avgSize();
-    for(i = 0; i < ilen; i++)
-    {
-      float y = randomIndexs.get(i);
+    for(i = 0; i < ilen; i++) {
+      countDowns.set(i, countDowns.get(i) - 1);
+      if (countDowns.get(i) > 0) { return; }
+      float y = random(0, height);
       float amp = songAnalyzer.fft.M.getAvg(i);
       float xVel = amp;
-      //float count = int(amp * maxCount / songAnalyzer.fft.maxLoudLess);
-      float count = int(amp);
-      println(count);
+      // TODO: need limit.
+      float count = int(amp * maxCount * 2 / songAnalyzer.fft.loudLess);
 
-      if (count < 1) { return; }
+      if (count < 1) { continue; }
 
-      //for(i = 0; i < count; i++) {
-        //Boid boid = new Boid(10, y, 0);
-        //boid.vel.x = xVel;
-        //flock.addBoid(boid);
-      //}
+      Boid boid = new Boid(10, y, 0);
+      boid.vel.x = xVel;
+      flock.addBoid(boid);
+
+      countDowns.set(i, countDownTime);
     }
 
     //ilen = songAnalyzer.fft.R.specSize();
@@ -64,8 +78,11 @@ class SongDirector {
 
   ArrayList<Integer> getRandomIndexs() {
     ArrayList<Integer> indexs = new ArrayList<Integer>();
-    for (int i = 0; i < songAnalyzer.fft.averages; ++i) {
-      indexs.add(i);
+    int i;
+    int ilen = songAnalyzer.fft.averages;
+
+    for (i = 0; i < songAnalyzer.fft.averages; ++i) {
+      indexs.add(i * height / ilen);
     }
     Collections.shuffle(indexs);
     return indexs;
