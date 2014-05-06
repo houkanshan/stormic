@@ -62,18 +62,6 @@ class SongDirector {
 
       countDowns.set(i, countDownTime);
     }
-
-    //ilen = songAnalyzer.fft.R.specSize();
-    //for(int i = 0; i < ilen; i++)
-    //{
-      //float y = height/2 - i;
-      //float x = songAnalyzer.fft.R.getBand(i)/100;
-      //if (x < 5) {
-        //return;
-      //}
-      //Boid boid = new Boid(10, y, 0);
-      //boid.vel.x = x;
-    //}
   }
 
   ArrayList<Integer> getRandomIndexs() {
