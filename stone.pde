@@ -9,6 +9,7 @@ class Stone {
   float size = 100;
   float minSize = 30;
   float maxSize = 300;
+  Vec3D angVel;
 
   color ccolor = color(254, 254, 254);
 
@@ -23,11 +24,6 @@ class Stone {
     Vec3D c = new Vec3D(1, 0, 0);
     Vec3D d = new Vec3D(1, 0, 0);
 
-    a.scaleSelf(size);
-    b.scaleSelf(size);
-    c.scaleSelf(size);
-    d.scaleSelf(size);
-
     b.rotateZ(radians(120));
 
     c.rotateZ(radians(120));
@@ -41,11 +37,15 @@ class Stone {
     vecs.add(b);
     vecs.add(c);
     vecs.add(d);
+
+    angVel = Vec3D.randomVector().normalizeTo(radians(0.3));
+
     initialize();
   }
 
   // fuck processing stupid this keyword.
   void initialize() {
+    scale(size);
     addFaces(vecs);
   }
 
@@ -58,11 +58,19 @@ class Stone {
       f.setColor(ccolor);
       f.update();
     }
+    rotate3D(angVel);
   }
 
   void render() {
     for(Face f: faces) {
       f.render();
+    }
+  }
+
+  void setSize(float size) {
+    size = min(size, maxSize);
+    for( Vec3D v : vecs ) {
+      v.normalizeTo(size);
     }
   }
 
