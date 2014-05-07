@@ -25,6 +25,19 @@ class Flock {
     }
   }
 
+  void forceSpeed(float speed) {
+    for (Boid b : boids) {
+      b.speedLimit = false;
+      b.vel = b.vel.normalizeTo(speed);
+    }
+  }
+
+  void stopSpeedForce() {
+    for (Boid b : boids) {
+      b.speedLimit = true;
+    }
+  }
+
   void addBoid(Boid b) {
     boids.add(b);
   }

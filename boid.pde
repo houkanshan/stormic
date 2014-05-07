@@ -20,6 +20,7 @@ class Boid {
   Vec3D vel = new Vec3D(0, 0, 0);
   Vec3D acc = new Vec3D(0, 0, 0);
   Boolean isAlive = true;
+  Boolean speedLimit = true;
 
   Boid(float x, float y, float z) {
     body = new Stone();
@@ -57,7 +58,10 @@ class Boid {
     // Update velocity
     vel.addSelf(acc);
     // Limit speed
-    vel.limit(maxspeed);
+    if (speedLimit) {
+      vel.limit(maxspeed);
+    }
+
     loc.addSelf(vel);
     // Reset accelertion to 0 each cycle
     acc.scaleSelf(0);

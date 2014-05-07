@@ -28,6 +28,7 @@ class SongDirector {
 
   void update() {
     createBoids();
+    pushBoids();
   }
 
   Boolean needWait() {
@@ -64,6 +65,15 @@ class SongDirector {
 
       countDowns.set(i, countDownTime);
     }
+  }
+
+  void pushBoids() {
+    float loudLess = songAnalyzer.fft.loudLess;
+    if (loudLess < 100) {
+      flock.stopSpeedForce();
+      return;
+    }
+    flock.forceSpeed(loudLess / 60);
   }
 
   ArrayList<Integer> getRandomIndexs() {
