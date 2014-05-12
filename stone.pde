@@ -1,17 +1,24 @@
+float sizeWeight = 0.6;
+
 class Stone {
 
   ArrayList<Vec3D> vecs;
   ArrayList<Face> faces = new ArrayList<Face>();
 
   Vec3D jitterSize = new Vec3D(3, 3, 3);
-  Boolean jitterOn = true;
+  Boolean jitterOn = false;
+  Boolean sizeJitterOn = true;
 
   float size = 100;
-  float minSize = 30;
-  float maxSize = 300;
+  float origSize = 100;
+  float minSize = 10;
+  float maxSize = 250;
   Vec3D angVel;
 
-  color ccolor = color(254, 254, 254);
+  int freq = 0;
+  float freqAmp = 0;
+
+  color ccolor = black;
 
   Stone(ArrayList<Vec3D> _vecs) {
     vecs = _vecs;
@@ -43,10 +50,12 @@ class Stone {
     initialize();
   }
 
-  // fuck processing stupid this keyword.
+  // fuck processing stupid `this` keyword.
   void initialize() {
     scale(size);
+
     addFaces(vecs);
+    shapeJitter();
   }
 
   void update() {
@@ -54,11 +63,15 @@ class Stone {
       shapeJitter();
       limitShape();
     }
+    if (sizeJitterOn) {
+      sizeJitter();
+    }
     for(Face f: faces) {
       f.setColor(ccolor);
       f.update();
     }
     rotate3D(angVel);
+    limitShape();
   }
 
   void render() {
@@ -72,6 +85,10 @@ class Stone {
     for( Vec3D v : vecs ) {
       v.normalizeTo(size);
     }
+  }
+  void setOrigSize(float size) {
+    origSize = size;
+    setSize(size);
   }
 
   void scale(float size) {
@@ -109,6 +126,22 @@ class Stone {
     for(Vec3D v : vecs) {
       v.addSelf(center.getInverted());
     }
+  }
+
+  void sizeJitter() {
+    if (doSizeJitter()) {
+      ccolor = disco;
+      setSize(freqAmp * sizeWeight);
+    } else {
+      setSize(origSize);
+      ccolor = black;
+    }
+  }
+
+  Boolean doSizeJitter() {
+    return origSize > 80
+      && freqAmp * sizeWeight + 10 > origSize
+      && freqAmp * sizeWeight < maxSize;
   }
 
   void limitShape() {

@@ -3,8 +3,19 @@ class Face {
   Vec3D a;
   Vec3D b;
   Vec3D c;
-  color ccolor = color(254, 254, 254);
+  Vec3D ab;
+  Vec3D ac;
+  
+  float normalLength = 0;
+  float amp = 0;
 
+  Shadow sab = new Shadow();
+  Shadow sbc = new Shadow();
+  Shadow sca = new Shadow();
+
+  color ccolor = black;
+
+  // for texture
   PImage img = loadImage("paint_color_s.png");
   Vec2D ta = new Vec2D(0, 0);
   Vec2D tb = new Vec2D(0, 100);
@@ -16,31 +27,65 @@ class Face {
     a = _a;
     b = _b;
     c = _c;
+    updateLines();
+    updateTexture();
+    updateShadows();
   }
 
   void update() {
-    Vec3D ab = b.sub(a);
-    Vec3D ac = c.sub(a);
+    updateLines();
+    //updateShadows();
+    //updateTexture();
+  }
+
+  void render() {
+    renderShape();
+    //renderNormalLine(); // ugly.
+    if (debug) {
+      renderSkeleton();
+    }
+    renderShadows();
+  }
+
+  void updateLines() {
+    ab = b.sub(a);
+    ac = c.sub(a);
+  }
+
+  void updateTexture() {
     float bac = ac.angleBetween(ab, true);
     float _bc = ab.magnitude();
     tc = new Vec2D(_bc * sin(bac), _bc * cos(bac));
   }
 
-  void render() {
-    renderShape();
-    if (debug) {
-      lineV(a);
-      lineV(b);
-      lineV(c);
-    }
+  void updateShadows() {
+    sab.updateVec(a, b, c);
+    sbc.updateVec(b, c, a);
+    sca.updateVec(c, a, b);
   }
 
+  void renderShadows() {
+    sab.render();
+    sbc.render();
+    sca.render();
+  }
+
+  void renderSkeleton() {
+    lineV(a);
+    lineV(b);
+    lineV(c);
+  }
+
+  void renderNormalLine() {
+    lineV(getNormalVector().scaleSelf(normalLength));
+  }
 
   void renderShape() {
+    beginShape();
     stroke(0);
 
-    beginShape();
     tint(ccolor);
+    fill(254);
     texture(img);
     shapeV(a, ta);
     shapeV(b, tb);
@@ -51,6 +96,11 @@ class Face {
   void setColor(color _color) {
     ccolor = _color;
   }
+
+  Vec3D getNormalVector() {
+    return Vec3DHelper.normalVector(ac, ab);
+  }
+
 
 
   // util

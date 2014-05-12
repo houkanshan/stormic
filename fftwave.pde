@@ -1,8 +1,6 @@
 import ddf.minim.analysis.*;
 
- 
 class FFTWave {
-
   float maxLoudLess = 3500;
   AudioPlayer song;
   FFT L;
@@ -15,7 +13,7 @@ class FFTWave {
   FFTWave(AudioPlayer _song) {
     song = _song;
     L = new FFT(song.bufferSize(), song.sampleRate());
-    L.linAverages(averages);
+    L.linAverages(50);
     R = new FFT(song.bufferSize(), song.sampleRate());
     M = new FFT(song.bufferSize(), song.sampleRate());
     M.linAverages(averages); // maybe should not use.
@@ -44,16 +42,22 @@ class FFTWave {
     // so that we can see the lines better
     int ilen;
 
-    ilen = L.avgSize();
+    ilen = M.avgSize();
     for(int i = 0; i < ilen; i++) {
-      float y = height/2 - i;
-      line(0, y, L.getAvg(i) * 10, y);
+      if (i % 2 != 0) { continue; }
+      float y = height/2 - i * 20;
+      float x = M.getAvg(i) * 5;
+      if (x < 20) { continue; }
+      renderSignal(x, y);
     }
 
-    ilen = R.specSize();
+    ilen = L.avgSize();
     for(int i = 0; i < ilen; i++) {
-      float y = height/2 + i;
-      line(0, y, R.getBand(i)*4, y);
+      if (i % 2 != 0) { continue; }
+      float y = height/2 + i * 20 + 50;
+      float x = log(L.getAvg(i) + 1) * 50;
+      if (x < 20) { continue; }
+      renderSignal(x, y);
     }
   }
 
@@ -64,5 +68,17 @@ class FFTWave {
       loudLess += M.getAvg(i);
     }
     return loudLess;
+  }
+
+  void renderSignal(float x, float y) {
+    beginShape();
+
+    noStroke();
+    fill(disco, 200);
+    vertex(0, y - x/2, 0);
+    vertex(0, y + x/2, 0);
+    vertex(x * sqrt(3) / 2, y, 0);
+
+    endShape(CLOSE);
   }
 }

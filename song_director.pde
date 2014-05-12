@@ -29,6 +29,7 @@ class SongDirector {
   void update() {
     createBoids();
     pushBoids();
+    setFreqInfo();
   }
 
   Boolean needWait() {
@@ -60,7 +61,9 @@ class SongDirector {
 
       Boid boid = new Boid(10, y, 0);
       boid.vel.x = xVel;
-      boid.body.setSize(exp(songAnalyzer.fft.loudLess / 50));
+      boid.body.freq = i;
+      float size = exp(songAnalyzer.fft.loudLess / 50);
+      boid.body.setOrigSize(size);
       flock.addBoid(boid);
 
       countDowns.set(i, countDownTime);
@@ -74,6 +77,14 @@ class SongDirector {
       return;
     }
     flock.forceSpeed(loudLess / 60);
+  }
+
+  void setFreqInfo() {
+    for(Boid b: flock.boids) {
+      Stone body = b.body;
+      //body.freqAmp = songAnalyzer.fft.M.getAvg(body.freq);
+      body.freqAmp = songAnalyzer.fft.loudLess;
+    }
   }
 
   ArrayList<Integer> getRandomIndexs() {

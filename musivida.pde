@@ -1,7 +1,7 @@
 import processing.opengl.*;
 import toxi.geom.*;
 
-Boolean debug = true;
+Boolean debug = false;
 
 Flock flock;
 SongAnalyzer songAnalyzer;
@@ -20,7 +20,7 @@ void setup() {
 }
 
 void draw() {
-  background(255);
+  background(30);
 
   //openCamera();
   openLight();

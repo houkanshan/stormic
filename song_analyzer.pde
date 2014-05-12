@@ -7,6 +7,7 @@ class SongAnalyzer {
   Wave wave;
   FFTWave fft;
   Beat beat;
+  Bass bass;
 
   SongAnalyzer(Object processing, String fileName) {
     initialize(processing, fileName);
@@ -22,6 +23,7 @@ class SongAnalyzer {
     wave = new Wave(song);
     fft = new FFTWave(song);
     beat = new Beat(song);
+    bass = new Bass(fft.M);
   }
 
   void run() {
@@ -33,14 +35,15 @@ class SongAnalyzer {
   }
 
   void render() {
-    wave.run();
-    fft.run();
+    fft.update();
+    bass.run();
+    fft.render();
     beat.run();
+    wave.run();
   }
 
   void initPlayer(AudioPlayer song) {
     song.loop();
-    pause();
   }
 
   // Player Control

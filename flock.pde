@@ -9,6 +9,8 @@ import java.util.concurrent.CopyOnWriteArrayList;
 
 class Flock {
   CopyOnWriteArrayList<Boid> boids; // An ArrayList for all the boids
+  Boolean speedLimit = true;
+  float pushSpeed = 0;
 
   Flock() {
     boids = new CopyOnWriteArrayList<Boid>(); // Initialize the ArrayList
@@ -16,6 +18,10 @@ class Flock {
 
   void run() {
     for (Boid b : boids) {
+      b.speedLimit = speedLimit;
+      if (!speedLimit) {
+        b.vel.normalizeTo(pushSpeed);
+      }
       b.run(boids);
     }
     for (Boid b : boids) {
@@ -26,16 +32,12 @@ class Flock {
   }
 
   void forceSpeed(float speed) {
-    for (Boid b : boids) {
-      b.speedLimit = false;
-      b.vel = b.vel.normalizeTo(speed);
-    }
+    speedLimit = false;
+    pushSpeed = speed;
   }
 
   void stopSpeedForce() {
-    for (Boid b : boids) {
-      b.speedLimit = true;
-    }
+    speedLimit = true;
   }
 
   void addBoid(Boid b) {
