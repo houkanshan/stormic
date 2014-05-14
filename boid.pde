@@ -3,15 +3,16 @@
 // Daniel Shiffman
 // http://natureofcode.com
 
-float swt = 30.0;     //sep.mult(25.0f);
-float awt = 3.0;      //ali.mult(4.0f);
-float cwt = 4.0;      //coh.mult(5.0f);
-float maxspeed = 3;
-float maxforce = 0.025;
-float zR = 10;
-float collisionWeaken = 0.8;
 
 class Boid {
+  float swt = 30.0;     //sep.mult(25.0f);
+  float awt = 3.0;      //ali.mult(4.0f);
+  float cwt = 4.0;      //coh.mult(5.0f);
+  float maxspeed = 3;
+  float maxforce = 0.025;
+  float zR = 10;
+  float collisionWeaken = 0.8;
+
   Stone body;
 
   float r = 100;
@@ -24,7 +25,6 @@ class Boid {
 
   Boid(float x, float y, float z) {
     body = new Stone();
-
     acc = new Vec3D(0, 0, 0);
     vel = new Vec3D(random(0.5,1), random(-1,1), random(-2,2));
     loc = new Vec3D(x, y, z);

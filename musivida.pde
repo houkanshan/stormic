@@ -6,6 +6,8 @@ Boolean debug = false;
 Flock flock;
 SongAnalyzer songAnalyzer;
 SongDirector songDirector;
+String theme = "black";
+color backgroundColor;
 
 void setup() {
   //size(1024, 640, "processing.core.PGraphicsRetina2D");
@@ -16,11 +18,19 @@ void setup() {
   flock = new Flock();
   songDirector = new SongDirector(songAnalyzer, flock);
 
+  println(theme);
+  if (theme == "black") {
+    backgroundColor = mineShaft;
+    println("hred");
+  } else {
+    backgroundColor = white;
+  }
+
   smooth();
 }
 
 void draw() {
-  background(30);
+  background(backgroundColor);
 
   //openCamera();
   openLight();

@@ -4,12 +4,19 @@ class Wave {
   int[] lines;
   int linesCount = 4;
   float loudLess;
+  color strokeColor;
 
   AudioPlayer song;
 
   Wave(AudioPlayer _song) {
     song = _song;
     initLines();
+
+    if (theme == "black") {
+      strokeColor = black;
+    } else {
+      strokeColor = mineShaft;
+    }
   }
 
   void run() {
@@ -22,7 +29,8 @@ class Wave {
   }
 
   void render() {
-    stroke(0);
+    float alpha = min(254, loudLess / 500 * 255);
+    stroke(strokeColor, alpha);
     // we draw the waveform by connecting neighbor values with a line
     // we multiply each of the values by 50 
     // because the values in the buffers are normalized

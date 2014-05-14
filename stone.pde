@@ -1,7 +1,6 @@
 float sizeWeight = 0.6;
 
 class Stone {
-
   ArrayList<Vec3D> vecs;
   ArrayList<Face> faces = new ArrayList<Face>();
 
@@ -18,7 +17,7 @@ class Stone {
   int freq = 0;
   float freqAmp = 0;
 
-  color ccolor = black;
+  color ccolor = white;
 
   Stone(ArrayList<Vec3D> _vecs) {
     vecs = _vecs;
@@ -134,7 +133,7 @@ class Stone {
       setSize(freqAmp * sizeWeight);
     } else {
       setSize(origSize);
-      ccolor = black;
+      ccolor = white;
     }
   }
 

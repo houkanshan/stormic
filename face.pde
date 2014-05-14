@@ -13,7 +13,7 @@ class Face {
   Shadow sbc = new Shadow();
   Shadow sca = new Shadow();
 
-  color ccolor = black;
+  color ccolor = white;
 
   // for texture
   PImage img = loadImage("paint_color_s.png");
