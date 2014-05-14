@@ -6,19 +6,20 @@ Boolean debug = false;
 Flock flock;
 SongAnalyzer songAnalyzer;
 SongDirector songDirector;
-String theme = "black";
+Sandstorm sandstorm;
+String theme = "white";
 color backgroundColor;
 
 void setup() {
   //size(1024, 640, "processing.core.PGraphicsRetina2D");
-  size(1024, 640, OPENGL);
+  size(displayWidth, displayHeight, OPENGL);
   hint(ENABLE_RETINA_PIXELS); // useless..
 
-  songAnalyzer = new SongAnalyzer(this, "song.mp3");
+  songAnalyzer = new SongAnalyzer(this, "song1.mp3");
   flock = new Flock();
-  songDirector = new SongDirector(songAnalyzer, flock);
+  sandstorm = new Sandstorm();
+  songDirector = new SongDirector(songAnalyzer, flock, sandstorm);
 
-  println(theme);
   if (theme == "black") {
     backgroundColor = mineShaft;
     println("hred");
@@ -27,6 +28,9 @@ void setup() {
   }
 
   smooth();
+}
+boolean sketchFullScreen() {
+  return true;
 }
 
 void draw() {

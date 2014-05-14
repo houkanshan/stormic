@@ -6,12 +6,14 @@ int countDownTime = 3;
 class SongDirector {
   Flock flock;
   SongAnalyzer songAnalyzer;
+  Sandstorm sandstorm;
   ArrayList<Integer> randomIndexs;
   ArrayList<Integer> countDowns;
   int countDown;
 
-  SongDirector(SongAnalyzer _songAnalyzer, Flock _flock) {
+  SongDirector(SongAnalyzer _songAnalyzer, Flock _flock, Sandstorm _sandstorm) {
     flock = _flock;
+    sandstorm = _sandstorm;
     songAnalyzer = _songAnalyzer;
     randomIndexs = getRandomIndexs();
     countDowns = new ArrayList<Integer>(Collections.nCopies(
@@ -24,6 +26,7 @@ class SongDirector {
     update();
 
     flock.run();
+    sandstorm.run();
   }
 
   void update() {
@@ -49,25 +52,51 @@ class SongDirector {
 
     ilen = songAnalyzer.fft.M.avgSize();
     for(i = 0; i < ilen; i++) {
-      countDowns.set(i, countDowns.get(i) - 1);
-      if (countDowns.get(i) > 0) { return; }
-
-      float y = random(0, height);
-      float amp = songAnalyzer.fft.M.getAvg(i);
-      float xVel = amp;
-      float count = int(amp * maxCount * 2 / songAnalyzer.fft.loudLess);
-
-      if (count < 1) { continue; }
-
-      Boid boid = new Boid(10, y, 0);
-      boid.vel.x = xVel;
-      boid.body.freq = i;
-      float size = exp(songAnalyzer.fft.loudLess / 50);
-      boid.body.setOrigSize(size);
-      flock.addBoid(boid);
-
-      countDowns.set(i, countDownTime);
+      if (countDone(i)) {
+        resetCount(i);
+        createBoids(i);
+        createSands(i);
+      }
     }
+  }
+
+  Boolean countDone(int i) {
+    countDowns.set(i, countDowns.get(i) - 1);
+    return countDowns.get(i) <= 0;
+  }
+  void resetCount(int i) {
+    countDowns.set(i, countDownTime);
+  }
+
+  void createBoids(int i) {
+
+    float y = random(0, height);
+    float amp = songAnalyzer.fft.M.getAvg(i);
+    float xVel = amp;
+    float count = int(amp * maxCount * 2 / songAnalyzer.fft.loudLess);
+
+    if (count < 2) { return; }
+
+    Boid boid = new Boid(10, y, 0);
+    boid.vel.x = xVel;
+    boid.body.freq = i;
+    float size = exp(songAnalyzer.fft.loudLess / 50);
+    boid.body.setOrigSize(size);
+    flock.addBoid(boid);
+
+  }
+
+  void createSands(int i) {
+    float y = random(0, height);
+    float amp = songAnalyzer.fft.M.getAvg(i);
+    float xVel = amp;
+    float count = int(amp * maxCount * 2 / songAnalyzer.fft.loudLess);
+
+    if (count < 1) { return; }
+
+    Sand sand = new Sand(0, y, 0);
+    sand.vel.x = xVel;
+    sandstorm.addSand(sand);
   }
 
   void pushBoids() {

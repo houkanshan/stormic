@@ -129,7 +129,7 @@ class Stone {
 
   void sizeJitter() {
     if (doSizeJitter()) {
-      ccolor = disco;
+      ccolor = black;
       setSize(freqAmp * sizeWeight);
     } else {
       setSize(origSize);
