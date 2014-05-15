@@ -13,7 +13,6 @@ class Wave {
     song = _song;
 
     lengthPerLine = ceil(width / float(song.bufferSize()));
-    println(lengthPerLine);
 
     lengthPerLine = 2;
 

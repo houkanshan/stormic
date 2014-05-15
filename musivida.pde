@@ -24,7 +24,6 @@ void setup() {
 
   if (theme == "black") {
     backgroundColor = mineShaft;
-    println("hred");
   } else {
     backgroundColor = white;
   }
