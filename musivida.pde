@@ -9,13 +9,15 @@ SongDirector songDirector;
 Sandstorm sandstorm;
 String theme = "white";
 color backgroundColor;
+Boolean fullscreen = false;
 
 void setup() {
   //size(1024, 640, "processing.core.PGraphicsRetina2D");
+  //size(2000, 640, OPENGL);
   size(displayWidth, displayHeight, OPENGL);
   hint(ENABLE_RETINA_PIXELS); // useless..
 
-  songAnalyzer = new SongAnalyzer(this, "song1.mp3");
+  songAnalyzer = new SongAnalyzer(this, "song.mp3");
   flock = new Flock();
   sandstorm = new Sandstorm();
   songDirector = new SongDirector(songAnalyzer, flock, sandstorm);
@@ -30,7 +32,7 @@ void setup() {
   smooth();
 }
 boolean sketchFullScreen() {
-  return true;
+  return fullscreen;
 }
 
 void draw() {

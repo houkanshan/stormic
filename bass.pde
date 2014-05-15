@@ -17,6 +17,10 @@ class Bass {
   float miLoudless;
   float loLoudless;
 
+  float origHiLoudless;
+  float origMiLoudless;
+  float origLoLoudless;
+
   PImage img = loadImage("bass.png");
 
   Bass(FFT _fft) {
@@ -28,6 +32,10 @@ class Bass {
     loVec = center.copy().jitter(new Random(), jitter);
     miVec = center.copy().jitter(new Random(), jitter);
     hiVec = center.copy().jitter(new Random(), jitter);
+
+    origHiLoudless = int(height * 0.8);
+    origMiLoudless = int(height * 1);
+    origLoLoudless = int(height * 1.4);
 
   }
 
@@ -55,9 +63,9 @@ class Bass {
   }
 
   void updateBassLoudless() {
-    hiLoudless = 600;
-    miLoudless = 700;
-    loLoudless = 800;
+    hiLoudless = origHiLoudless;
+    miLoudless = origMiLoudless;
+    loLoudless = origLoLoudless;
     float rate = 10;
 
     int ilen = fft.avgSize();

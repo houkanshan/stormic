@@ -5,11 +5,18 @@ class Wave {
   int linesCount = 4;
   float loudLess;
   color strokeColor;
+  int lengthPerLine = 1;
 
   AudioPlayer song;
 
   Wave(AudioPlayer _song) {
     song = _song;
+
+    lengthPerLine = ceil(width / float(song.bufferSize()));
+    println(lengthPerLine);
+
+    lengthPerLine = 2;
+
     initLines();
 
     if (theme == "black") {
@@ -49,8 +56,8 @@ class Wave {
         }
         nowLeft = !nowLeft;
 
-        line(i, line + wave.get(i)*amp,
-            i+1, line + wave.get(i+1)*amp);
+        line(i * lengthPerLine, line + wave.get(i)*amp,
+            (i+1) * lengthPerLine, line + wave.get(i+1)*amp);
       }
     }
   }
