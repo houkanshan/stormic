@@ -11,6 +11,8 @@ String theme = "black";
 color backgroundColor;
 Boolean fullscreen = true;
 
+Boolean recordMovie = false;
+
 void setup() {
   //size(1024, 640, "processing.core.PGraphicsRetina2D");
   size(1024, 640, OPENGL);
@@ -40,6 +42,11 @@ void draw() {
   //openCamera();
   openLight();
   songDirector.run();
+
+  if (recordMovie) {
+    saveFrame("dist/####.tif");
+  }
+
 }
 
 void mousePressed() {
