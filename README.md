@@ -10,4 +10,8 @@ Demo: [youku](http://v.youku.com/v_show/id_XNzEyNTMzNjE2.html) [youtube](http://
 ![](https://houkanshan.github.io/stormic/daily/5.1.png)
 ![](https://houkanshan.github.io/stormic/daily/5.2.png)
 
+Library requirement: 
+[Minim(included in Processing)](http://code.compartmental.net/minim/),
+[Toxiclibs](http://toxiclibs.org/)
+
 I Hate Processing.
